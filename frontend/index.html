@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+
+        </title>
+        <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+        <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
+        <script>
+            tinymce.init({
+                selector: 'textarea',
+                theme: 'modern',
+                autosave_interval: "20s",
+                plugins: 'preview searchreplace autosave directionality visualblocks visualchars fullscreen link table charmap hr anchor toc insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
+                toolbar1: 'formatselect | font |bold italic strikethrough superscript subscript codesample | link | alignleft aligncenter alignright alignjustify  | numlist bullist | removeformat',
+            });
+        </script>
+    </head>
+    <body>
+        
+        <textarea 'id'='textareaarticle' rows=35>
+
+        </textarea>
+    </body>
+</html>
