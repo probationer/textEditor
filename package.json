@@ -1,0 +1,25 @@
+{
+  "name": "document-editor",
+  "version": "1.0.0",
+  "description": "simple editor for book novelist and scholars",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/probationer/textEditor.git"
+  },
+  "author": "sandeep_roy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/probationer/textEditor/issues"
+  },
+  "homepage": "https://github.com/probationer/textEditor#readme",
+  "dependencies": {
+    "bower": "^1.8.8",
+    "electron": "^4.1.1",
+    "python-shell": "^1.0.7"
+  }
+}

@@ -1,0 +1,4 @@
+installation of electron 
+1. npm init (create a package.json)
+2. npm install --save electron (create a node_modules folder with electron framework and package-lock.json)
+3. 
