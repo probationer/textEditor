@@ -4,16 +4,13 @@
         <title id="title">
             Writer Box
         </title>
-        <link rel="stylesheet" href="css/left_panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
-        <!-- <link rel="stylesheet" href="css/tab.css"> -->
         <!-- <link rel="stylesheet" href="css/footer.css"> -->
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tiny_mce.js"></script>
         <script src="../bower_components/jquery/dist/jquery.min.js"></script>
         <script src="../render_process/save.js"></script>
-        <link rel="stylesheet" href="../node_modules/electron-tabs/electron-tabs.css">
 
         <script>
             tinymce.init({
@@ -22,72 +19,26 @@
                 // inline: true,
                 // hidden_input: false,
                 autosave_interval: "20s",
-                plugins: 'preview searchreplace autosave directionality visualblocks visualchars fullscreen link table charmap hr anchor toc insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
+                // plugins: 'preview searchreplace autosave directionality visualblocks visualchars fullscreen link table charmap hr anchor toc insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
                 toolbar1: 'formatselect | font |bold italic strikethrough superscript subscript codesample | link | alignleft aligncenter alignright alignjustify  | numlist bullist | removeformat',
             });
         </script>
-
         <style> 
-            #middle_section{
-                margin-left :260px;
-            }
         </style>
     </head>
 
     <body >
-        <div class="left_panel" id="leftPanel">
-                <h3>Editor Name</h3>
-                <br>
-                <a>Open folders</a>
-        </div>
         <div id="middle_section" >
-            <!-- <div class="etabs-tabgroup">
-                <div class="etabs-tabs"></div>
-                <div class="etabs-buttons"></div>
-            </div>
-            <div class="etabs-views"></div>
-                         -->
-            
             <input id="file_name" placeholder="Page Name">
-            <span id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</span>
+            <span id="saved_file_notification" class="saved_file_notification">save file</span>
             <textarea id="textarea_file" autofocus rows="40"> 
             </textarea>
         </div>
-        
-    
-        <!-- <script>
-
-            const TabGroup = require("electron-tabs");
-            
-            //new tab logic
-            let tabGroup = new TabGroup({
-                newTab: {
-                    title: 'untitled',
-                    src: "blank_page.html",
-                    visible: true, 
-                }
-            });
-            tabGroup.addTab({
-                title: 'untitled',
-                src: "blank_page.html",
-                visible: true,
-                active:true,
-            });
-            
-            onload =  () => {
-                const webview = document.querySelector('webview.visible')
-            webview.addEventListener('dom-ready', () => {
-                console.log(webview)
-            })
-            let webview1 = tab.webview;
-            console.log(webview1)
-        }
-        </script> -->
         <script>    
             const {ipcRenderer} = require('electron');
             const {globalShortcut,app,dialog} = require('electron').remote;
             const fs = require("fs")
-              
+            
             //check file name must not be empty
             function required_input(div_id){
                 console.log(div_id)
@@ -110,41 +61,31 @@
             }
 
             //save the file in system
-            function saveFile(){
+            globalShortcut.register('CommandOrControl+S', () => {
+                // console.log()
                 if (required_input("file_name") != 0){
                     tinymce.triggerSave();
                     let item = document.getElementById('textarea_file').value;
                     let filename = document.getElementById('file_name').value;
                     ipcRenderer.send('item_add', [item, filename.split(".")[0]]);
-                    return true
                 }else{
                     document.getElementById("file_name").focus();
                 }
-                return false
-            }
-
-            function reply_from_main(){
-                ipcRenderer.on('reply', function(event, arg) {
-                    // document.getElementById('saved_file_notification').innerHTML = arg;
-                    document.getElementById('saved_file_notification').classList.add('onSave');
-                    setTimeout(() => {
-                        document.getElementById('saved_file_notification').classList.remove('onSave');
-                    }, 1500);
-                    console.log(document.getElementById('saved_file_notification').classList);
-                    var filename = arg.split('/').pop()
-                    console.log("kklejre"+ filename)
-                    document.getElementById('file_name').value = filename;
-                })
-                
-                document.getElementById("leftPanel").innerHTML =document.getElementById("leftPanel").innerHTML + '<a href="#">'+filename+'</a>' ;
-                console.log(document.getElementById("leftPanel").innerHTML)
-            }
-
-            globalShortcut.register('CommandOrControl+S', () => {
-                console.log(saveFile())
-                reply_from_main()
             })
-            
+            ipcRenderer.on('reply', (event, arg) => {
+                console.log("asd", arg)
+                document.getElementById('saved_file_notification').innerHTML = arg;
+                document.getElementById('saved_file_notification').classList.add('onSave');
+                setTimeout(() => {
+                    document.getElementById('saved_file_notification').classList.remove('onSave');
+                }, 500);
+                
+                console.log(document.getElementById('saved_file_notification').classList);
+                var filename = arg.split('/').pop()
+                console.log(filename)
+                document.getElementById('file_name').value = filename;
+            })
+
             //read file from system
             globalShortcut.register('CommandOrControl+O', (event) =>{
                 dialog.showOpenDialog((filename) => {
@@ -164,17 +105,7 @@
                     })
                 })
             })
-        
-            //create new file
-            globalShortcut.register('CommandOrControl+N', (event) => {
-                saveFile()
-                reply_from_main()
-            })
-        
+            
         </script>
-
     </body>
-    <footer class="footer">
-        <h3>Creation Of S.Roy</h3>
-    </footer>
 </html>
