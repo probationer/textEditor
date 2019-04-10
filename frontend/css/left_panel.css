@@ -14,10 +14,10 @@
   .left_panel a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     color: white;
     display: block;
-    background-color: #464242;
+    /* background-color: #464242; */
     transition: 0.3s;
   }
   
@@ -25,13 +25,13 @@
     color: #f1f1f1;
   }
   
-  .left_panel .closebtn {
+  /* .left_panel .closebtn {
     position: absolute;
     top: 0;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
-  }
+  } */
   
   #main {
     transition: margin-left .5s;
@@ -40,7 +40,11 @@
   
   @media screen and (max-height: 450px) {
     .left_panel {padding-top: 15px;}
-    .left_panel a {font-size: 18px;}
+    .left_panel a {
+      font-size: 14px;
+      font-weight: 100;
+      font-family: sans-serif;
+    }
   }
 
 

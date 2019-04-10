@@ -4,16 +4,14 @@
         <title id="title">
             Writer Box
         </title>
+        <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/left_panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
-        <!-- <link rel="stylesheet" href="css/tab.css"> -->
-        <!-- <link rel="stylesheet" href="css/footer.css"> -->
+        <link rel="stylesheet" href="css/footer.css">
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tiny_mce.js"></script>
         <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="../render_process/save.js"></script>
-        <link rel="stylesheet" href="../node_modules/electron-tabs/electron-tabs.css">
 
         <script>
             tinymce.init({
@@ -38,16 +36,9 @@
         <div class="left_panel" id="leftPanel">
                 <h3>Editor Name</h3>
                 <br>
-                <a>Open folders</a>
+                <h3>Open folders</h3>
         </div>
         <div id="middle_section" >
-            <!-- <div class="etabs-tabgroup">
-                <div class="etabs-tabs"></div>
-                <div class="etabs-buttons"></div>
-            </div>
-            <div class="etabs-views"></div>
-                         -->
-            
             <input id="file_name" placeholder="Page Name">
             <span id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</span>
             <textarea id="textarea_file" autofocus rows="40"> 
@@ -90,7 +81,6 @@
               
             //check file name must not be empty
             function required_input(div_id){
-                console.log(div_id)
                 InputValue = document.getElementById(div_id).value
                 if (InputValue.trim() == ""){
                     var responseValue;
@@ -103,7 +93,6 @@
                     responseValue = dialog.showMessageBox(null, option, function(response) {
                                         return response
                                     }())
-                    console.log(responseValue)
                     return responseValue;
                     // document.getElementById(div_id).value = NewInputValue
                 } 
@@ -130,20 +119,34 @@
                     setTimeout(() => {
                         document.getElementById('saved_file_notification').classList.remove('onSave');
                     }, 1500);
-                    console.log(document.getElementById('saved_file_notification').classList);
                     var filename = arg.split('/').pop()
-                    console.log("kklejre"+ filename)
                     document.getElementById('file_name').value = filename;
+                    add_file_in_context(filename, "leftPanel")
                 })
-                
-                document.getElementById("leftPanel").innerHTML =document.getElementById("leftPanel").innerHTML + '<a href="#">'+filename+'</a>' ;
-                console.log(document.getElementById("leftPanel").innerHTML)
             }
 
-            globalShortcut.register('CommandOrControl+S', () => {
-                console.log(saveFile())
-                reply_from_main()
-            })
+            function add_file_in_context(file_name, context_menu_id){
+                let open_filles = document.getElementById(context_menu_id).innerHTML
+                no_file_of_same_name = true
+                for(i = 0;i<document.getElementsByTagName("a").length;i++){
+                    if(file_name === document.getElementsByTagName("a")[i].innerHTML){
+                        document.getElementsByTagName("a")[i].style.background = "#464242"
+                        no_file_of_same_name = false
+                    }else{
+                        document.getElementsByTagName("a")[i].style.background = getComputedStyle(document.querySelector('.left_panel')).backgroundColor
+                    }
+                }
+                if(no_file_of_same_name){
+                    document.getElementById(context_menu_id).innerHTML = open_filles + '<a href="">'+file_name+'</a>';
+                    document.getElementsByTagName("a")[i].style.background = "#464242"
+                }
+            }
+
+            //save file
+            // globalShortcut.register('CommandOrControl+S', () => {
+            //     saveFile()
+            //     reply_from_main()
+            // })
             
             //read file from system
             globalShortcut.register('CommandOrControl+O', (event) =>{
@@ -158,17 +161,25 @@
                         if(err){
                             console.log("An error ocurred reading the file : " + err.message)
                         }
-                        console.log(data+":\n" +filepath.split('/').pop())
-                        document.getElementById('file_name').value = filepath.split('/').pop()
-                        tinymce.activeEditor.setContent(data);
+                        file_name = filepath.split('/').pop()
+                        document.getElementById('file_name').value = file_name
+                        tinymce.activeEditor.setContent(data)
+                        add_file_in_context(file_name, "leftPanel")
                     })
                 })
             })
         
             //create new file
             globalShortcut.register('CommandOrControl+N', (event) => {
-                saveFile()
-                reply_from_main()
+                if(saveFile()){
+                    reply_from_main()
+                    //remove every thing from editor 
+                    //remove the file name
+                    document.getElementById('file_name').value = null
+                    tinymce.activeEditor.setContent();
+
+                }
+
             })
         
         </script>

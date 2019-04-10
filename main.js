@@ -33,7 +33,6 @@ function HomeScreen() {
 
    //Create new file
    ipcMain.on('item_add', (event, content) => {
-      console.log("data :"+content)
       var filename;
       if (content[1] == "" ){
          filename = 'untitled'
@@ -86,7 +85,6 @@ function CreateNewFIle(filename, data){
    }
 
    dialog.showSaveDialog(null ,option, (filename) =>{
-      console.log("option" + option)
       write_in_file(filename, data)
    })
 }  
