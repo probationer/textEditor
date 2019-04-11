@@ -5,7 +5,9 @@
             Writer Box
         </title>
         <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/left_panel.css">
+        <link rel="stylesheet" href="css/right_panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
         <link rel="stylesheet" href="css/footer.css">
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
@@ -34,16 +36,28 @@
 
     <body>
         <div class="left_panel" id="leftPanel">
+                <h3><img src="../images/logo.png" alt="Trulli" >sdfghjk</h3>
                 <h3>Editor Name</h3>
                 <br>
                 <h3>Open folders</h3>
         </div>
         <div id="middle_section" >
-            <input id="file_name" placeholder="Page Name">
+            <input id="file_name" placeholder="Page Name"> 
+            <button type="button" class="btn btn-primary" style="margin-left: 500px;background-color:crimson;">Merge Changes</button>
             <span id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</span>
             <textarea id="textarea_file" autofocus rows="40"> 
             </textarea>
         </div>
+        
+        <div class="right_panel" id="rightPanel">
+            <h3><i class="material-icons" >history</i> Change Activities</h3>
+            <br>
+            
+          <div class="container" style="background-color:rgb(56, 77, 114);height:70px;">dfghjkl</div>  
+          <div class="container" style="background-color:rgb(64, 38, 70);height:70px;">dfghjkl</div>  
+          <div class="container" style="background-color:rgb(48, 28, 53);height:70px;">dfghjkl</div>  
+          
+    </div>
     </body>
     
         <!-- <script>

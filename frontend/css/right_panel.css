@@ -1,0 +1,25 @@
+.right_panel {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  /* z-index: 1; */
+  top: 60px;
+  right: 0;
+  /* background-color: #2d2323; */
+  background-color:rgb(65, 14,35);
+  overflow-x: hidden;
+  /* transition: 0.5s; */
+  padding-top: 20px;
+}
+
+.right_panel h3{
+  /* font: 22px sans-serif; */
+  font-size: 22px ;
+  color:white;
+  /* font-family:Constantina,Georgia,'Nimbus Roman No9 L',serif; */
+  font-family:Verdana,Geneva,'Bitstream Vera Sans','DejaVu Sans',sans-serif;
+
+  margin: 5px auto auto 15px;
+  color: whitesmoke;
+  font-weight: 200;
+}
