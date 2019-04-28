@@ -5,16 +5,21 @@ const fs = require('fs')
 const menu = new Menu()
 
 let win  
-
+let root_folder = '/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/'
+      
 function HomeScreen() { 
-   win = new BrowserWindow({width: 800, height: 600}) 
+   win = new BrowserWindow({
+      width: 1281, 
+      height: 800,
+      icon: path.join(__dirname, 'frontend/icons/box_128x128.png')
+   }) 
    win.loadURL(url.format ({ 
       pathname: path.join(__dirname, 'frontend/index.html'), 
       protocol: 'file:', 
       slashes: true
    })) 
 
-   // win.webContents.openDevTools()
+   win.webContents.openDevTools()
 
    menu.append(new MenuItem({
       label: 'Print',
@@ -39,10 +44,10 @@ function HomeScreen() {
       }else{
          filename = content[1]
       }
-      
+      //TODO : root folder must be recived here
       //check if file already exist then update that file
       filename = filename + ".txt"
-      let existing_filepath = app.getPath('documents') +'/' +filename
+      let existing_filepath =  root_folder + filename //app.getPath('/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/')  +filename ,
       fs.access(existing_filepath, (err) => {
          if (err) {
                console.log('does not exist')
@@ -54,9 +59,9 @@ function HomeScreen() {
        })
 
       if (content[0] == null){
-         alert("please writesomething")
+         alert("please write something")
       }
-      event.sender.send('reply', filename)
+      event.sender.send('reply', existing_filepath)
    })
 
 }  
@@ -75,13 +80,13 @@ app.on('will-quit', () =>{
 })
  
 
-function CreateNewFIle(filename, data){
+function CreateNewFIle(filename, data, root_folder = '/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/'){
    const option = {
       title: 'file save',
       filter: [
          {name: 'text', extensions : ['docs','txt'] }
       ],
-    defaultPath: app.getPath('documents') +'/' +filename ,
+    defaultPath: root_folder + filename //app.getPath('/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/')  +filename ,
    }
 
    dialog.showSaveDialog(null ,option, (filename) =>{
