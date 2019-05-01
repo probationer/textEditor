@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="css/left_panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
         <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tiny_mce.js"></script>
@@ -33,10 +34,30 @@
     </head>
 
     <body>
-        <div class="left_panel" id="leftPanel">
-                <h3>Editor Name</h3>
-                <br>
-                <h3>Open folders</h3>
+        <div class="left-panel" id="leftPanel">
+            <div class="product-desc">
+                <img src="images/product-logo.png">
+                <div class="product-name">writer box</div>
+            </div>
+            <div class="folder-options">
+                <div class="option-item main-option">
+                    <i class="fa fa-folder large-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">Open Folder</a>
+                </div>
+                <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 1</a>
+                </div>
+                <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 2</a>
+                </div>
+                <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 3</a>
+                </div>
+            </div>
+
         </div>
         <div id="middle_section" >
             <input id="file_name" placeholder="Page Name">
