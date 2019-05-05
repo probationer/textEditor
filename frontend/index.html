@@ -106,146 +106,216 @@
             </div>
         </div>
     </body>
-    
-        <!-- <script>
-
-            const TabGroup = require("electron-tabs");
-            
-            //new tab logic
-            let tabGroup = new TabGroup({
-                newTab: {
-                    title: 'untitled',
-                    src: "blank_page.html",
-                    visible: true, 
+    <script>    
+        const {ipcRenderer} = require('electron');
+        const {globalShortcut,app,dialog} = require('electron').remote;
+        const fs = require("fs")
+        const ps = require("python-shell")
+        
+        //check file name must not be empty
+        function required_input(div_id){
+            InputValue = document.getElementById(div_id).value
+            if (InputValue.trim() == ""){
+                var responseValue;
+                option = {
+                    type: "info",
+                    buttons: ["Okay",],
+                    title: "Title of file",
+                    message: "I think this beautifull creation must deserve a name",
                 }
-            });
-            tabGroup.addTab({
-                title: 'untitled',
-                src: "blank_page.html",
-                visible: true,
-                active:true,
-            });
-            
-            onload =  () => {
-                const webview = document.querySelector('webview.visible')
-            webview.addEventListener('dom-ready', () => {
-                console.log(webview)
-            })
-            let webview1 = tab.webview;
-            console.log(webview1)
+                responseValue = dialog.showMessageBox(null, option, function(response) {
+                                    return response
+                                }())
+                return responseValue;
+                // document.getElementById(div_id).value = NewInputValue
+            } 
         }
-        </script> -->
-        <script>    
-            const {ipcRenderer} = require('electron');
-            const {globalShortcut,app,dialog} = require('electron').remote;
-            const fs = require("fs")
-              
-            //check file name must not be empty
-            function required_input(div_id){
-                InputValue = document.getElementById(div_id).value
-                if (InputValue.trim() == ""){
-                    var responseValue;
-                    option = {
-                        type: "info",
-                        buttons: ["Okay",],
-                        title: "Title of file",
-                        message: "I think this beautifull creation must deserve a name",
-                    }
-                    responseValue = dialog.showMessageBox(null, option, function(response) {
-                                        return response
-                                    }())
-                    return responseValue;
-                    // document.getElementById(div_id).value = NewInputValue
-                } 
-            }
 
-            //save the file in system
-            function saveFile(){
-                if (required_input("file_name") != 0){
-                    tinymce.triggerSave();
-                    let item = document.getElementById('textarea_file').value;
-                    let filename = document.getElementById('file_name').value;
-                    ipcRenderer.send('item_add', [item, filename.split(".")[0]]);
-                    return true
-                }else{
-                    document.getElementById("file_name").focus();
-                }
-                return false
+        //save the file in system
+        function saveFile(){
+            if (required_input("file_name") != 0){
+                tinymce.activeEditor.save();
+                // tinymce.triggerSave();
+                let item = document.getElementById('textarea_file').value;
+                let filename = document.getElementById('file_name').value;
+                // TODO: add project dir from frontend 
+                //let project_dir = '/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/'//documet.getElementById('current_project').value;
+                ipcRenderer.send('item_add', [item, filename.split(".")[0]]);
+                return true
+            }else{
+                document.getElementById("file_name").focus();
             }
+            return false
+        }
 
-            function reply_from_main(){
-                ipcRenderer.on('reply', function(event, arg) {
-                    // document.getElementById('saved_file_notification').innerHTML = arg;
-                    document.getElementById('saved_file_notification').classList.add('onSave');
-                    setTimeout(() => {
-                        document.getElementById('saved_file_notification').classList.remove('onSave');
-                    }, 1500);
-                    var filename = arg.split('/').pop()
-                    document.getElementById('file_name').value = filename;
-                    add_file_in_context(filename, "leftPanel")
-                })
-            }
+        //get reply from main.js
+        function reply_from_main(){
+            ipcRenderer.on('reply', function(event, arg) {
+                // document.getElementById('saved_file_notification').innerHTML = arg;
+                document.getElementById('saved_file_notification').classList.add('onSave');
+                setTimeout(() => {
+                    document.getElementById('saved_file_notification').classList.remove('onSave');
+                }, 1500);
+                var filename = arg
+                filename = filename.split('/').pop()
+                console.log(filename)
+                document.getElementById('file_name').value = filename;
+                savePath(arg)
+                add_file_in_context(arg, "leftPanel")
+            })
+        }
 
-            function add_file_in_context(file_name, context_menu_id){
-                let open_filles = document.getElementById(context_menu_id).innerHTML
-                no_file_of_same_name = true
-                for(i = 0;i<document.getElementsByTagName("a").length;i++){
-                    if(file_name === document.getElementsByTagName("a")[i].innerHTML){
-                        document.getElementsByTagName("a")[i].style.background = "#464242"
-                        no_file_of_same_name = false
-                    }else{
-                        document.getElementsByTagName("a")[i].style.background = getComputedStyle(document.querySelector('.left_panel')).backgroundColor
-                    }
-                }
-                if(no_file_of_same_name){
-                    document.getElementById(context_menu_id).innerHTML = open_filles + '<a href="">'+file_name+'</a>';
+        //add file name in context
+        function add_file_in_context(file_name, context_menu_id){
+            console.log(file_name, context_menu_id)
+            let open_filles = document.getElementById(context_menu_id).innerHTML
+            no_file_of_same_name = true
+            for(i = 0; i<document.getElementsByTagName("a").length; i++){
+                console.log(document.getElementsByTagName("a")[i].innerHTML)
+                if(file_name == document.getElementsByTagName("a")[i].innerHTML){
+                    console.log('same file name')
                     document.getElementsByTagName("a")[i].style.background = "#464242"
+                    no_file_of_same_name = false
+                }else{
+                    console.log('not same file name', document.getElementsByTagName("a")[i].innerHTML)
+                    document.getElementsByTagName("a")[i].style.backgroundColor = getComputedStyle(document.querySelector('.left_panel')).backgroundColor
                 }
             }
+            if(no_file_of_same_name){
+                document.getElementById("current_file").value = file_name
+                document.getElementById(context_menu_id).innerHTML = open_filles + '<a href="">'+file_name.split('/').pop()+'</a>';
+                document.getElementsByTagName("a")[i].style.background = "#464242"
+            }
+        }
 
-            //save file
-            // globalShortcut.register('CommandOrControl+S', () => {
-            //     saveFile()
-            //     reply_from_main()
-            // })
-            
-            //read file from system
-            globalShortcut.register('CommandOrControl+O', (event) =>{
-                dialog.showOpenDialog((filename) => {
-                    // fileNames is an array that contains all the selected
-                    if(filename === undefined){
-                        console.log("No file selected")
-                    }
-                    filepath = filename[0]
-                    var filedata
-                    fs.readFile(filepath, 'utf-8', (err, data) => {
-                        if(err){
-                            console.log("An error ocurred reading the file : " + err.message)
+        //show changes 
+        function showChanges(div_id){
+            if(document.getElementById(div_id).classList[1] == 'btn-info'){
+                document.getElementById(div_id).innerHTML = 'Hide Changes'
+                document.getElementById(div_id).classList.remove('btn-info')
+                document.getElementById(div_id).classList.add('btn-default')
+                document.getElementById(div_id).value =1
+                getDiff()
+            }else{
+                document.getElementById(div_id).innerHTML = 'Show Changes'
+                document.getElementById(div_id).classList.remove('btn-default')
+                document.getElementById(div_id).classList.add('btn-info')
+                document.getElementById(div_id).value =0
+            }
+            //python get changes
+           
+            // py.on('message', function (message) {
+            //     // received a message sent from the Python script (a simple "print" statement)
+            //     // console.log((message))
+            //     let doc = new DOMParser().parseFromString(message, 'text/html');
+            //     // console.log("DOC", doc.body.childNodes);
+            //     // document.getElementById('output_value').appendChild(doc.body.firstChild)
+            //     // tinymce.activeEditor.setContent()
+            // });
+        }
+        
+        //get difference
+        function getDiff(){
+            file_path = document.getElementById('current_file').value;
+            options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path,] 
+                }
+            var py = ps.PythonShell.run("difference_checker.py", options, function(err, results){
+
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(results)
+                    var data = new String();
+                    const doc = new DOMParser()
+                    results.forEach(element => {
+                        const node = doc.parseFromString(element, 'text/html');
+                        if (node.body.firstChild != null && (node.body.firstChild.nodeType > 0 && node.body.firstChild.nodeType <=12 )){
+                            // document.getElementById('output_value').appendChild(node.body.firstChild)
+                            data += element
                         }
-                        file_name = filepath.split('/').pop()
-                        document.getElementById('file_name').value = file_name
-                        tinymce.activeEditor.setContent(data)
-                        add_file_in_context(file_name, "leftPanel")
                     })
+                    console.log(data)
+                    //set data in editor
+                    tinymce.activeEditor.insertContent(data)
+                }   
+            }) 
+        }
+        
+        //save path
+        function savePath(file_path){
+            options = {
+                scriptPath : '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                args : ['/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/.meta/',file_path]
+            }
+            var py = ps.PythonShell.run("path_manager.py", options, function(err, results){
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(results)
+                }
+            })
+
+        }
+
+        //show changes
+        function check_showChange_status(){
+            const activity = document.getElementById('show_changes').value
+            if (activity == '1'){
+                // getDiff()
+                if (tinymce.activeEditor.isDirty())
+                ///setDirty(state:Boolean)
+                    alert("You must save your contents.");
+            }
+        }
+        
+        //save file
+        globalShortcut.register('CommandOrControl+S', () => {
+            saveFile()
+            reply_from_main()
+        })
+        
+        //read file from system
+        globalShortcut.register('CommandOrControl+O', (event) =>{
+            dialog.showOpenDialog((filename) => {
+                // fileNames is an array that contains all the selected
+                if(filename === undefined){
+                    console.log("No file selected")
+                }
+                filepath = filename[0]
+                var filedata
+                fs.readFile(filepath, 'utf-8', (err, data) => {
+                    if(err){
+                        console.log("An error ocurred reading the file : " + err.message)
+                    }
+                    file_name = filepath.split('/').pop()
+                    document.getElementById('file_name').value = file_name
+                    tinymce.activeEditor.setContent(data)
+                    add_file_in_context(filename[0], "leftPanel")
                 })
             })
-        
-            //create new file
-            globalShortcut.register('CommandOrControl+N', (event) => {
-                if(saveFile()){
-                    reply_from_main()
-                    //remove every thing from editor 
-                    //remove the file name
-                    document.getElementById('file_name').value = null
-                    tinymce.activeEditor.setContent();
+        })
+    
+        //create new file
+        globalShortcut.register('CommandOrControl+N', (event) => {
+            if(saveFile()){
+                reply_from_main()
+                //remove every thing from editor 
+                //remove the file name
+                document.getElementById('file_name').value = null
+                tinymce.activeEditor.setContent();
 
-                }
+            }
 
-            })
-        
-        </script>
+        })
+    
+    </script>
 
-    <footer class="footer">
+    <!-- <footer class="footer">
         <h3>Creation Of S.Roy</h3>
-    </footer>
+    </footer> -->
 </html>
