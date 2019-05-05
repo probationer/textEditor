@@ -17,11 +17,7 @@ let root_folder = '/Users/vs/Documents/workspace@roy/text-editor/textEditor/text
       
 function HomeScreen() { 
    win = new BrowserWindow({
-<<<<<<< HEAD
-      width: 1281, 
-=======
       width: 1280, 
->>>>>>> 11fb6ffb1387eebde1a98bbc89a120eb746b83a1
       height: 800,
       icon: path.join(__dirname, 'frontend/icons/box_128x128.png')
    }) 

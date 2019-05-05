@@ -6,8 +6,11 @@
         </title>
         <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/left_panel.css">
+        <link rel="stylesheet" href="css/right-panel.css">
+        <link rel="stylesheet" href="css/middle-panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
         <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tiny_mce.js"></script>
@@ -19,43 +22,91 @@
                 theme: 'modern',
                 // inline: true,
                 // hidden_input: false,
-                // autosave_interval: "20s",
+                autosave_interval: "20s",
                 plugins: 'preview searchreplace autosave directionality visualblocks visualchars fullscreen link table charmap hr anchor toc insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
                 toolbar1: 'formatselect | font |bold italic strikethrough superscript subscript codesample | link | alignleft aligncenter alignright alignjustify  | numlist bullist | removeformat',
-                init_instance_callback: function (editor) {
-                    editor.on('KeyPress', function (e) {
-                        check_showChange_status()
-                    });
-                }
-
             });
         </script>
 
-        <style> 
-            #middle_section{
-                margin-left :260px;
-            }
-        </style>
     </head>
 
     <body>
-        <div class="left_panel" id="leftPanel">
-                <h3>Editor Name</h3>
-                <br>
-                <h3>Open folders</h3>
+        <div class="left-panel" id="leftPanel">
+            <div class="product-desc">
+                <img src="images/product-logo.png">
+                <div class="product-name">writer box</div>
+            </div>
+            <div class="folder-options">
+                <div class="option-item main-option">
+                    <i class="fa fa-folder large-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">Open Folder</a>
+                </div>
+                <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 1</a>
+                </div>
+                <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 2</a>
+                </div>
+                <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 3</a>
+                </div>
+            </div>
+
         </div>
         <div id="middle_section" >
-            <input id="file_name" placeholder="Page Name">
-            <input type="hidden" id='current_file' value="">
-            <input type='hidden' id='current_project' value="">
-            <span id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</span>
-            <button type="button" class="btn btn-info" id="show_changes" onclick="showChanges('show_changes')" value="0" >Show Changes</button>
-            <br>
-            <textarea id="textarea_file" onkeypress="check_showChange_status()" autofocus rows="40"> 
-            </textarea>
+            <div class="header-container">
+                <input id="file_name" placeholder="Document Title">
+                <div id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</div>
+                <div class="button-container">
+                    <button type="button" class="save-button" onclick="alert('Hello world!')">Merge Changes</button>
+                    <button type="button" class="save-button" onclick="alert('Hello world!')">
+                        <i class="fa fa-lock small-icon" aria-hidden="true"></i>
+                        <span>Protector</span>
+                    </button>
+                </div>
+            </div>
+            <div class="text-editor-container">
+                <textarea id="textarea_file" autofocus rows="40"> 
+                </textarea>
+                <div class="history-writer">
+                    <div class="change-header">
+                        <i class="fa fa-clock-o clock-icon" aria-hidden="true"></i>
+                        <span class="margin-left"> Change Activities</span>
+                    </div>
+                    <div class="change-items">
+                        <div class="change-item-heading">Draft 1: Abc 1</div>
+                        <div class="change-item-sub">12:18 a.m, 03-05-2019</div>
+                        <div class="change-item-editor">
+                            <div class="saved-by">
+                                Saved by: <span id="editor-name">Abc</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="change-items">
+                        <div class="change-item-heading">Draft 2: Abc 2</div>
+                        <div class="change-item-sub">12:18 a.m, 03-05-2019</div>
+                        <div class="change-item-editor">
+                            <div class="saved-by">
+                                Saved by: <span id="editor-name">Abc</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="change-items">
+                        <div class="change-item-heading">Draft 3: Abc 3</div>
+                        <div class="change-item-sub">12:18 a.m, 03-05-2019</div>
+                        <div class="change-item-editor">
+                            <div class="saved-by">
+                                Saved by: <span id="editor-name">Abc</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
-    
     <script>    
         const {ipcRenderer} = require('electron');
         const {globalShortcut,app,dialog} = require('electron').remote;
@@ -151,7 +202,6 @@
                 document.getElementById(div_id).classList.remove('btn-default')
                 document.getElementById(div_id).classList.add('btn-info')
                 document.getElementById(div_id).value =0
-<<<<<<< HEAD
             }
             //python get changes
            
@@ -213,69 +263,6 @@
 
         }
 
-=======
-            }
-            //python get changes
-           
-            // py.on('message', function (message) {
-            //     // received a message sent from the Python script (a simple "print" statement)
-            //     // console.log((message))
-            //     let doc = new DOMParser().parseFromString(message, 'text/html');
-            //     // console.log("DOC", doc.body.childNodes);
-            //     // document.getElementById('output_value').appendChild(doc.body.firstChild)
-            //     // tinymce.activeEditor.setContent()
-            // });
-        }
-        
-        //get difference
-        function getDiff(){
-            file_path = document.getElementById('current_file').value;
-            options = { 
-                        mode: 'text',
-                        //pythonPath: 'path/to/python',
-                        pythonOptions: ['-u'], // get print results in real-time
-                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
-                        args: [file_path,] 
-                }
-            var py = ps.PythonShell.run("difference_checker.py", options, function(err, results){
-
-                if (err) {
-                    console.log(err)
-                }else{
-                    console.log(results)
-                    var data = new String();
-                    const doc = new DOMParser()
-                    results.forEach(element => {
-                        const node = doc.parseFromString(element, 'text/html');
-                        if (node.body.firstChild != null && (node.body.firstChild.nodeType > 0 && node.body.firstChild.nodeType <=12 )){
-                            // document.getElementById('output_value').appendChild(node.body.firstChild)
-                            data += element
-                        }
-                    })
-                    console.log(data)
-                    //set data in editor
-                    tinymce.activeEditor.insertContent(data)
-                }   
-            }) 
-        }
-        
-        //save path
-        function savePath(file_path){
-            options = {
-                scriptPath : '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
-                args : ['/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/.meta/',file_path]
-            }
-            var py = ps.PythonShell.run("path_manager.py", options, function(err, results){
-                if (err) {
-                    console.log(err)
-                }else{
-                    console.log(results)
-                }
-            })
-
-        }
-
->>>>>>> 11fb6ffb1387eebde1a98bbc89a120eb746b83a1
         //show changes
         function check_showChange_status(){
             const activity = document.getElementById('show_changes').value
@@ -291,10 +278,6 @@
         globalShortcut.register('CommandOrControl+S', () => {
             saveFile()
             reply_from_main()
-<<<<<<< HEAD
-            
-=======
->>>>>>> 11fb6ffb1387eebde1a98bbc89a120eb746b83a1
         })
         
         //read file from system
