@@ -151,6 +151,7 @@
                 document.getElementById(div_id).classList.remove('btn-default')
                 document.getElementById(div_id).classList.add('btn-info')
                 document.getElementById(div_id).value =0
+<<<<<<< HEAD
             }
             //python get changes
            
@@ -212,6 +213,69 @@
 
         }
 
+=======
+            }
+            //python get changes
+           
+            // py.on('message', function (message) {
+            //     // received a message sent from the Python script (a simple "print" statement)
+            //     // console.log((message))
+            //     let doc = new DOMParser().parseFromString(message, 'text/html');
+            //     // console.log("DOC", doc.body.childNodes);
+            //     // document.getElementById('output_value').appendChild(doc.body.firstChild)
+            //     // tinymce.activeEditor.setContent()
+            // });
+        }
+        
+        //get difference
+        function getDiff(){
+            file_path = document.getElementById('current_file').value;
+            options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path,] 
+                }
+            var py = ps.PythonShell.run("difference_checker.py", options, function(err, results){
+
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(results)
+                    var data = new String();
+                    const doc = new DOMParser()
+                    results.forEach(element => {
+                        const node = doc.parseFromString(element, 'text/html');
+                        if (node.body.firstChild != null && (node.body.firstChild.nodeType > 0 && node.body.firstChild.nodeType <=12 )){
+                            // document.getElementById('output_value').appendChild(node.body.firstChild)
+                            data += element
+                        }
+                    })
+                    console.log(data)
+                    //set data in editor
+                    tinymce.activeEditor.insertContent(data)
+                }   
+            }) 
+        }
+        
+        //save path
+        function savePath(file_path){
+            options = {
+                scriptPath : '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                args : ['/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/.meta/',file_path]
+            }
+            var py = ps.PythonShell.run("path_manager.py", options, function(err, results){
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(results)
+                }
+            })
+
+        }
+
+>>>>>>> 11fb6ffb1387eebde1a98bbc89a120eb746b83a1
         //show changes
         function check_showChange_status(){
             const activity = document.getElementById('show_changes').value
@@ -227,7 +291,10 @@
         globalShortcut.register('CommandOrControl+S', () => {
             saveFile()
             reply_from_main()
+<<<<<<< HEAD
             
+=======
+>>>>>>> 11fb6ffb1387eebde1a98bbc89a120eb746b83a1
         })
         
         //read file from system

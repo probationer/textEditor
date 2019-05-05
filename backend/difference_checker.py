@@ -1,6 +1,6 @@
 import sys
 from difflib import Differ, SequenceMatcher, HtmlDiff
-from path_manager import StorePath, Inventory_file
+from .path_manager import StorePath, Inventory_file
 
 def fileCompare(old_file_input, new_file_input):
     with open("/Users/vs/Documents/output.html", 'w') as output_file:
