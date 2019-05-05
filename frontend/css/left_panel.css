@@ -1,37 +1,68 @@
-.left_panel {
+  .left-panel {
     height: 100%;
     width: 250px;
     position: fixed;
-    /* z-index: 1; */
+    background: yellow;
     top: 0;
     left: 0;
     background-color: #2d2323;
     overflow-x: hidden;
-    /* transition: 0.5s; */
-    padding-top: 20px;
-  }
-  
-  .left_panel a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 12px;
+    padding: 20px;
     color: white;
-    display: block;
-    /* background-color: #464242; */
-    transition: 0.3s;
+  }
+
+  .product-desc {
+    display: flex;
+    width: 100%;
+  }
+
+  .product-name {
+    width: 90px;
+    font-size: 24px;
+    font-weight: 100;
+    line-height: 1em;
+    margin-left: 10px;
+  }
+
+  .folder-options {
+    font-size: 12px;
+    font-weight: 100;
+    margin-top: 30px;
+  }
+
+  .option-item {
+    line-height: 2em;
+    display: flex;
+    align-items: center;
+    margin-left: 10px
+  }
+
+  .main-option {
+    margin: unset;
+  }
+
+  .option-name {
+    margin-left: 10px;
+  }
+
+  .large-icon {
+    font-size: 18px !important;
+  }
+
+  .small-icon {
+    font-size: 14px !important;
   }
   
-  .left_panel a:hover {
-    color: #f1f1f1;
-  }
+  .left-panel a {
+    padding: 0;
+    text-decoration: unset;
+    color: unset;
+  } 
   
-  /* .left_panel .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  } */
+  .left-panel a:hover {
+    text-decoration: unset;
+    color: unset;
+  }
   
   .deactivated_link{
     padding: 8px 8px 8px 32px;
@@ -49,18 +80,10 @@
   }
   
   @media screen and (max-height: 450px) {
-    .left_panel {padding-top: 15px;}
-    .left_panel a {
+    .left-panel {padding-top: 15px;}
+    .left-panel a {
       font-size: 14px;
       font-weight: 100;
       font-family: sans-serif;
     }
-  }
-
-
-  .left_panel h3{
-    font: 24px sans-serif;
-    margin: 10px auto auto 30px;
-    color: whitesmoke;
-    font-weight: 200;
   }
