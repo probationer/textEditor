@@ -14,7 +14,7 @@ function HomeScreen() {
       slashes: true
    })) 
 
-   // win.webContents.openDevTools()
+   win.webContents.openDevTools()
 
    menu.append(new MenuItem({
       label: 'Print',

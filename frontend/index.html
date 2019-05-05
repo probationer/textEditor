@@ -6,6 +6,8 @@
         </title>
         <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/left_panel.css">
+        <link rel="stylesheet" href="css/right-panel.css">
+        <link rel="stylesheet" href="css/middle-panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
         <link rel="stylesheet" href="css/footer.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -25,12 +27,6 @@
                 toolbar1: 'formatselect | font |bold italic strikethrough superscript subscript codesample | link | alignleft aligncenter alignright alignjustify  | numlist bullist | removeformat',
             });
         </script>
-
-        <style> 
-            #middle_section{
-                margin-left :260px;
-            }
-        </style>
     </head>
 
     <body>
@@ -60,10 +56,54 @@
 
         </div>
         <div id="middle_section" >
-            <input id="file_name" placeholder="Page Name">
-            <span id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</span>
-            <textarea id="textarea_file" autofocus rows="40"> 
-            </textarea>
+            <div class="header-container">
+                <input id="file_name" placeholder="Document Title">
+                <div id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</div>
+                <div class="button-container">
+                    <button type="button" class="save-button" onclick="alert('Hello world!')">Merge Changes</button>
+                    <button type="button" class="save-button" onclick="alert('Hello world!')">
+                        <i class="fa fa-lock small-icon" aria-hidden="true"></i>
+                        <span>Protector</span>
+                    </button>
+                </div>
+            </div>
+            <div class="text-editor-container">
+                <textarea id="textarea_file" autofocus rows="40"> 
+                </textarea>
+                <div class="history-writer">
+                    <div class="change-header">
+                        <i class="fa fa-clock-o clock-icon" aria-hidden="true"></i>
+                        <span class="margin-left"> Change Activities</span>
+                    </div>
+                    <div class="change-items">
+                        <div class="change-item-heading">Draft 1: Abc 1</div>
+                        <div class="change-item-sub">12:18 a.m, 03-05-2019</div>
+                        <div class="change-item-editor">
+                            <div class="saved-by">
+                                Saved by: <span id="editor-name">Abc</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="change-items">
+                        <div class="change-item-heading">Draft 2: Abc 2</div>
+                        <div class="change-item-sub">12:18 a.m, 03-05-2019</div>
+                        <div class="change-item-editor">
+                            <div class="saved-by">
+                                Saved by: <span id="editor-name">Abc</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="change-items">
+                        <div class="change-item-heading">Draft 3: Abc 3</div>
+                        <div class="change-item-sub">12:18 a.m, 03-05-2019</div>
+                        <div class="change-item-editor">
+                            <div class="saved-by">
+                                Saved by: <span id="editor-name">Abc</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
     
