@@ -2,10 +2,9 @@
     margin-left :260px;
 }
 
-.mce-panel {
+.mce-tinymce.mce-container.mce-panel {
     width: 75% !important;
 }
-
 .header-container {
     padding: 10px 0 20px;
     display: flex;
@@ -24,6 +23,15 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 2px;
     outline: none;
+    margin-right: 10px;
+}
+
+.header-dropdown {
+    outline: none;
+    background: rgb(58,36,58);
+    height: 40px;
+    width: 160px;
+    color: white;
 }
 
 .text-editor-container {

@@ -10,6 +10,7 @@
     font-size: 14px;
     font-weight: 200;
     width: 100%;
+    padding: 10px 20px;
 }  
 
 select#liste {
@@ -23,6 +24,10 @@ select#liste {
 
 .footer-drop-down {
     float: left;
+    width: 230px;
+    padding-right: 20px;
+    margin-right: 10px;
+
 }
 
 .footer-blocks{
@@ -34,7 +39,6 @@ select#liste {
 }
 
 .footer-block-see-changes {
-    margin-left: 200px;
 }
 
 .footer-block-type {

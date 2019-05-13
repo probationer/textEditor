@@ -60,6 +60,10 @@
                 <input id="file_name" placeholder="Document Title">
                 <div id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</div>
                 <div class="button-container">
+                    <select class="header-dropdown" onchange="getSelectedElement(this);">
+                        <option>Preview Changes</option>
+                        <option>Merge Changes</option>
+                    </select>
                     <button type="button" class="save-button" onclick="alert('Hello world!')">Merge Changes</button>
                     <button type="button" class="save-button" onclick="alert('Hello world!')">
                         <i class="fa fa-lock small-icon" aria-hidden="true"></i>
@@ -107,10 +111,7 @@
         </div>
         <footer class="footer">
             <div class="footer-drop-down">
-                <i class='fas fa-code-branch'></i>
-                <select class="footer-blocks" id="branch">
-                    <option disabled>branch</option>
-                </select>
+                <div>Username</div>
             </div>
             <div class="footer-blocks">
                 <div class="footer-block-see-changes">See Changes</div>
@@ -123,7 +124,7 @@
         const {globalShortcut,app,dialog} = require('electron').remote;
         const fs = require("fs")
         const ps = require("python-shell")
-        
+
         //check file name must not be empty
         function required_input(div_id){
             InputValue = document.getElementById(div_id).value
@@ -324,6 +325,18 @@
             }
 
         })
+
+        //selected option
+        function getSelectedElement(selectedElement){
+            var selectedIndex = selectedElement.selectedIndex;
+            var selectedElement = selectedElement.options[selectedIndex].value;
+
+            if(selectedElement === "Preview Changes") {
+                //TODO: Open Modal                
+            } else {
+                //TODO: Action for Merge Changes
+            }
+        }
     
     </script>
 </html>
