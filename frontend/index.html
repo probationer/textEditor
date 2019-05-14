@@ -29,11 +29,11 @@
         </script>
     </head>
 
-    <body>
+    <body style="background-color:#d2fff1">
         <div class="left-panel" id="leftPanel">
             <div class="product-desc">
                 <img src="images/product-logo.png">
-                <div class="product-name">writer box</div>
+                <div class="product-name">Writer Box</div>
             </div>
             <div class="folder-options">
                 <div class="option-item main-option">
@@ -60,8 +60,10 @@
                 <input id="file_name" placeholder="Document Title">
                 <div id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</div>
                 <div class="button-container">
-                    <button type="button" class="save-button" id="show_changes" onclick="showChanges('show_changes')">Show Changes</button>
-                    <button type="button" class="save-button" id="staging" onclick="stage_review('staging')">Stage Reivew</button>
+                    <select class="header-dropdown" onchange="getSelectedElement(this);">
+                        <option>Preview Changes</option>
+                        <option>Merge Changes</option>
+                    </select>
                     <button type="button" class="save-button" onclick="alert('Hello world!')">Merge Changes</button>
                     <button type="button" class="save-button" onclick="alert('Hello world!')">
                         <i class="fa fa-lock small-icon" aria-hidden="true"></i>
@@ -69,9 +71,8 @@
                     </button>
                 </div>
             </div>
-            <div class="text-editor-container">
-                <input type="hidden" id='current_file_path'>
-                <textarea id="textarea_file" autofocus rows="40"> 
+            <div class="text-editor-container" >
+                <textarea id="textarea_file" autofocus rows="20"> 
                 </textarea>
                 <div class="history-writer">
                     <div class="change-header">
@@ -108,13 +109,22 @@
                 </div>
             </div>
         </div>
+        <footer class="footer">
+            <div class="footer-drop-down">
+                <div>Username</div>
+            </div>
+            <div class="footer-blocks">
+                <div class="footer-block-see-changes">See Changes</div>
+                <div class="footer-block-type">Type</div>
+            </div>
+        </footer>
     </body>
     <script>    
         const {ipcRenderer} = require('electron');
         const {globalShortcut,app,dialog} = require('electron').remote;
         const fs = require("fs")
         const ps = require("python-shell")
-        
+
         //check file name must not be empty
         function required_input(div_id){
             InputValue = document.getElementById(div_id).value
@@ -313,10 +323,10 @@
         }
         
         //save file
-        globalShortcut.register('CommandOrControl+S', () => {
-            saveFile()
-            reply_from_main()
-        })
+        // globalShortcut.register('CommandOrControl+S', () => {
+        //     saveFile()
+        //     reply_from_main()
+        // })
         
         //read file from system
         globalShortcut.register('CommandOrControl+O', (event) =>{
@@ -351,10 +361,18 @@
             }
 
         })
+
+        //selected option
+        function getSelectedElement(selectedElement){
+            var selectedIndex = selectedElement.selectedIndex;
+            var selectedElement = selectedElement.options[selectedIndex].value;
+
+            if(selectedElement === "Preview Changes") {
+                //TODO: Open Modal                
+            } else {
+                //TODO: Action for Merge Changes
+            }
+        }
     
     </script>
-
-    <!-- <footer class="footer">
-        <h3>Creation Of S.Roy</h3>
-    </footer> -->
 </html>
