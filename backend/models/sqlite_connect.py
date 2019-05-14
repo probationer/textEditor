@@ -18,18 +18,29 @@ def create_new_table(statement):
     finally:
         conn.close()
  
-def select_query(sql, table_name):
+def select_query(sql):
     try:
         conn = sqlite_connect()
         cursor = conn.cursor()
         rows = cursor.execute(sql)
-        print(rows.fetchall())
+        return rows.fetchall()
     except Error as e:
         raise e
     finally:
         conn.close()
 
 def insert_query(query, variable):
+    try:
+        conn = sqlite_connect()
+        cur = conn.cursor()
+        cur.execute(query, variable)
+        conn.commit()
+    except Error as e:
+        raise e
+    finally:
+        conn.close()
+
+def update_query(query, variable):
     try:
         conn = sqlite_connect()
         cur = conn.cursor()
