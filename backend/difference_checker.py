@@ -176,11 +176,8 @@ def fileCompare2(new_file_input):
     print(status)
     if status == str(STAGED):
         content = get_staging_data(doc_id)[0][2]
-        # print(content)
-        print('\n\n')
         with open(new_file_input, 'r') as new_file:
             new_data = new_file.read()
-            # print(new_data)
             ds = list(Differ().compare(new_data.splitlines(), content.splitlines()))
         print(create_output(ds))
     elif status == str(COMMIT):
