@@ -170,6 +170,7 @@
                     document.getElementById('saved_file_notification').classList.remove('onSave');
                 }, 1500);
                 var filename = arg
+                console.log("arg : "+ arg)
                 filename = filename.split('/').pop()
                 console.log(filename)
                 document.getElementById('file_name').value = filename;
@@ -195,7 +196,7 @@
                 }
             }
             if(no_file_of_same_name){
-                document.getElementById("current_file").value = file_name
+                document.getElementById("current_file_path").value = file_name
                 document.getElementById(context_menu_id).innerHTML = open_filles + '<a href="">'+file_name.split('/').pop()+'</a>';
                 document.getElementsByTagName("a")[i].style.background = "#464242"
             }
@@ -229,7 +230,7 @@
         
         //get difference
         function getDiff(){
-            file_path = document.getElementById('current_file').value;
+            file_path = document.getElementById('current_file_path').value;
             options = { 
                         mode: 'text',
                         //pythonPath: 'path/to/python',
@@ -259,11 +260,46 @@
             }) 
         }
         
+        //Stage Changes 
+        function stage_review(div_id){
+            // if(document.getElementById(div_id).classList[1] == 'btn-info'){
+            //     document.getElementById(div_id).innerHTML = 'Reving Changes'
+                
+            // }
+            staging_changes()
+        }
+        
+        //stage change
+        function staging_changes(){
+            let file_path = document.getElementById('current_file_path').value;
+            tinymce.activeEditor.save();
+                // tinymce.triggerSave();
+            var item = document.getElementById('textarea_file').value;
+            console.log("file path: " + file_path)
+            options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path, item] 
+                }
+            var py = ps.PythonShell.run("staging_files.py", options, function(err, results){
+
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(item)
+                }   
+                console.log(results)
+            });
+        }
+        
+        
         //save path
         function savePath(file_path){
             options = {
                 scriptPath : '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
-                args : ['/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/.meta/',file_path]
+                args : [file_path]
             }
             var py = ps.PythonShell.run("path_manager.py", options, function(err, results){
                 if (err) {
@@ -300,7 +336,7 @@
                     console.log("No file selected")
                 }
                 filepath = filename[0]
-                var filedata
+                document.getElementById('current_file_path').value = filepath
                 fs.readFile(filepath, 'utf-8', (err, data) => {
                     if(err){
                         console.log("An error ocurred reading the file : " + err.message)
