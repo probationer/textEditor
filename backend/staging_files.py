@@ -20,6 +20,5 @@ if __name__ == "__main__":
     #     print("Should be exactly 2 arguments")
     # else:
     stage_file(file_path = arguments[0], content = arguments[1])
-
     #test
     # stage_file('/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/text1.txt',"22222")

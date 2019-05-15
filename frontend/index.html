@@ -158,6 +158,7 @@
             </div>
             <div class="footer-blocks">
                 <div class="footer-block-see-changes">See Changes</div>
+                <div class="footer-block-see-changes" onclick="commit_chamges('hello')">Commit</div>
                 <div class="footer-block-type">Type</div>
             </div>
         </footer>
@@ -304,6 +305,35 @@
             //     // tinymce.activeEditor.setContent()
             // });
         }        
+
+        //commit changes 
+        function commit_chamges(){
+            if (!tinymce.activeEditor.isDirty()){
+                let file_path = document.getElementById('current_file_path').value;
+                tinymce.activeEditor.save();
+                var item = document.getElementById('textarea_file').value;
+                console.log("file path ==>> " + file_path)
+                options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path, item] 
+                    }
+                var py = ps.PythonShell.run("commit_changes.py", options, function(err, results){
+
+                    if (err) {
+                        console.log(err)
+                    }else{
+                        console.log(item)
+                    }   
+                    alert(results)
+                });
+            }else{
+                alert("You must save your contents.");
+            }
+        }
+
         //get difference
         function getDiff(output_div){
             file_path = document.getElementById('current_file_path').value;
@@ -335,14 +365,6 @@
                     // tinymce.activeEditor.insertContent(data)
                 }   
             }) 
-        }
-        
-        //Stage Changes 
-        function stage_review(div_id){
-            // if(document.getElementById(div_id).classList[1] == 'btn-info'){
-            //     document.getElementById(div_id).innerHTML = 'Reving Changes'
-            // }
-            staging_changes()
         }
         
         //stage change

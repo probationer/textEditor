@@ -43,6 +43,20 @@ def get_staging_data(doc_id):
     row = select_query(s_query)
     return row
 
+def exist_in_staging(doc_id):
+    if get_staging_data(doc_id):
+        return True
+    else:
+        return False
+
+def remove_from_staging(doc_id):
+    del_qury = 'DELETE from staging where doc_id = ?'
+    try:
+        insert_query(del_qury, (doc_id))
+    except Error as e :
+        raise ("ERROR WHILE DELETING ROW : " + str(e))
+
 if __name__ == '__main__':
+    # print(exist_in_staging('467dbb84c1750dbb3ec6033404'))
     pass
     # create_new_table(table_structure)
