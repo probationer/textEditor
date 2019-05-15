@@ -2,7 +2,7 @@ import sys
 import json
 import random
 from models.stage_table import staging_create_or_update
-from models.document_table import get_doc_data_by_path
+from models.document_table import get_doc_data_by_path, update_doc_status
 
 def stage_file(file_path, content):
     doc_id = get_doc_data_by_path(file_path)[0][0]

@@ -16,7 +16,6 @@ table_structure = '''
                     );
                     '''
 def staging_create_or_update(data):
-    print("mark 1")
     date = datetime.datetime.now()
     row = get_staging_data(data['doc_id'])
     if row:

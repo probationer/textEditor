@@ -58,7 +58,7 @@
                         <option>Current Changes</option>
                         <option>Review Changes</option>
                     </select>
-                    <select class="header-dropdown" onchange="getSelectedElementFromP(this);">
+                    <select class="header-dropdown" onchange="getSelectedElementFrom(this);">
                         <option>Prepare Doc</option>
                         <option>
                             <i class="fa fa-lock small-icon" aria-hidden="true"></i>
@@ -121,30 +121,57 @@
                     <p style="display: flex; margin-bottom: 0; justify-content: center;">Current Changes </p>
                     <span class="close" style="color: black; ">Close</span>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="current_changes_box">
                 </div>
             </div>
         </div>
         
-        <div id="review_changes" class="modal">
+        <div id="review_changes"  class="modal">
             <div class="modal2-content">
                 <div class="modal-header">
                     <p style="display: flex; margin-bottom: 0; justify-content: center;">Review Changes </p>
                     <span class="close" style="color: black; ">Close</span>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="review_changes_box">
+                    <div style="border-right: 1px solid black; width:500px">
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                    </div>
+                    <div style="width:500px">
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                    </div>
                 </div>
             </div>
         </div>
-        
+        <footer class="footer">
+            <div class="footer-drop-down">
+                <div>Username</div>
+            </div>
+            <div class="footer-blocks">
+                <div class="footer-block-see-changes">See Changes</div>
+                <div class="footer-block-type">Type</div>
+            </div>
+        </footer>
+    
         <script>
             function getSelectedElement(selectedElement){
                 var selectedIndex = selectedElement.selectedIndex;
                 var selectedElement = selectedElement.options[selectedIndex].value;
                 
                 if(selectedElement === "Current Changes") {
+                    getDiff('current_changes_box')
                     modal1.style.display = "flex";
                 } else if(selectedElement === "Review Changes") {
+                    getDiff('review_changes_box')
                     modal2.style.display = "flex";
                 }
             }
@@ -187,7 +214,7 @@
                     type: "info",
                     buttons: ["Okay",],
                     title: "Title of file",
-                    message: "I think this beautifull creation must deserve a name",
+                    message: "I think this beautifull creation deserves a name",
                 }
                 responseValue = dialog.showMessageBox(null, option, function(response) {
                                     return response
@@ -278,7 +305,7 @@
             // });
         }        
         //get difference
-        function getDiff(){
+        function getDiff(output_div){
             file_path = document.getElementById('current_file_path').value;
             options = { 
                         mode: 'text',
@@ -302,10 +329,10 @@
                             data += element
                         }
                     })
-                    console.log(data)
+                    // console.log(data)
                     //set data in editor
-                    
-                    tinymce.activeEditor.insertContent(data)
+                    document.getElementById(output_div).innerHTML = data
+                    // tinymce.activeEditor.insertContent(data)
                 }   
             }) 
         }
@@ -314,7 +341,6 @@
         function stage_review(div_id){
             // if(document.getElementById(div_id).classList[1] == 'btn-info'){
             //     document.getElementById(div_id).innerHTML = 'Reving Changes'
-                
             // }
             staging_changes()
         }
@@ -323,7 +349,6 @@
         function staging_changes(){
             let file_path = document.getElementById('current_file_path').value;
             tinymce.activeEditor.save();
-                // tinymce.triggerSave();
             var item = document.getElementById('textarea_file').value;
             console.log("file path: " + file_path)
             options = { 
@@ -373,10 +398,10 @@
         }
         
         //save file
-        // globalShortcut.register('CommandOrControl+S', () => {
-        //     saveFile()
-        //     reply_from_main()
-        // })
+        globalShortcut.register('CommandOrControl+S', () => {
+            saveFile()
+            reply_from_main()
+        })
         
         //read file from system
         globalShortcut.register('CommandOrControl+O', (event) =>{

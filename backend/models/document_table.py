@@ -1,7 +1,7 @@
 import hashlib
 import random
 import datetime
-from .sqlite_connect import create_new_table, insert_query, select_query
+from .sqlite_connect import create_new_table, insert_query, select_query, update_query
 from sqlite3 import Error
 
 NEW = 1
@@ -39,7 +39,12 @@ def get_doc_data_by_path(path):
     rows = select_query(s_query)
     return rows
 
-    
+def update_doc_status(doc_id, status=1):
+    s_query = 'UPDATE document SET status = ? where doc_id = ?'
+    try: 
+        update_query(s_query, (status, doc_id))
+    except Error as e:
+        print(e)
 
 if __name__ == '__main__':
     pass
