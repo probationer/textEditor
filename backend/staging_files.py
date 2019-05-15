@@ -14,9 +14,6 @@ def stage_file(file_path, content):
     else:
         raise 'File Not Saved Properly'
 
-
-
-
 if __name__ == "__main__":
     arguments = sys.argv[1:]
     # if len(arguments) != 1:

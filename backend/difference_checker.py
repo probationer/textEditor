@@ -252,12 +252,13 @@ def list_to_string(list):
     return data
 
 if __name__ == "__main__":
-    # arguments = sys.argv[1:]
-    # if len(arguments) != 1:
-    #     print('please enter two digits')
-    # else:
-        # fileCompare2('/Users/vs/Documents/page1.txt', arguments[0])
-    fileCompare2('/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/test1.txt')
+    arguments = sys.argv[1:]
+    if len(arguments) != 1:
+        print('please enter two digits')
+    else:
+        print(arguments[0])
+        fileCompare2(arguments[0])
+    # fileCompare2('/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/test1.txt')
     # print(CheckOldVersion('/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/text1.txt'))
     # diff_list = ['- <p>hey</p>','  <p>this will be line 1</p>','- <p>this is line 2</p>','?          ^\n','+ <p>this will be line 2</p>','?         + ^^^^^\n']
     # diff_list = ['  <p>this will be line 1</p>','- <p>this will be line 2</p>','?              ^^\n','+ <p>this will word line 2</p>','?              ^^^^\n','- <p>this line a word</p>','+ <p>this line has word missing</p>','?              + +     ++++++++\n','+ <p>this line missing</p>']
