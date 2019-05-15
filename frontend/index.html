@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="css/middle-panel.css">
         <link rel="stylesheet" href="css/saved_file_text.css">
         <link rel="stylesheet" href="css/footer.css">
+        <link rel="import" href="Login_v1/index.html">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
@@ -64,7 +65,6 @@
                         <option>Preview Changes</option>
                         <option>Merge Changes</option>
                     </select>
-                    <button type="button" class="save-button" onclick="alert('Hello world!')">Merge Changes</button>
                     <button type="button" class="save-button" onclick="alert('Hello world!')">
                         <i class="fa fa-lock small-icon" aria-hidden="true"></i>
                         <span>Protector</span>
@@ -332,7 +332,11 @@
             var selectedElement = selectedElement.options[selectedIndex].value;
 
             if(selectedElement === "Preview Changes") {
-                //TODO: Open Modal                
+                //TODO: Open Modal            
+                var link = document.querySelector('link[rel="import"]');
+                var content = link.import;
+                var el = content.querySelector('.limiter');
+                document.body.appendChild(el.cloneNode(true));    
             } else {
                 //TODO: Action for Merge Changes
             }
