@@ -49,6 +49,16 @@ def doc_status_update(doc_id):
         print("doc table couldn't be update from commit table")
         raise e
 
+def get_last_commit_id(doc_id):
+    sel_query = 'select commit_id from commit_table where doc_id = "{}" order BY updated_at desc'.format(doc_id)
+    rows = select_query(sel_query)
+    if rows:
+        return rows[0][0]
+    else :
+        return None
+
+
 if __name__ == '__main__':
     pass
+    # print(get_last_commit_id('1227dc68d5b0afb0d7ebeb55484761a8'))
     #commit_insert(table_structure)

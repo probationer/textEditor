@@ -50,9 +50,9 @@ def exist_in_staging(doc_id):
         return False
 
 def remove_from_staging(doc_id):
-    del_qury = 'DELETE from staging where doc_id = ?'
+    del_qury = 'DELETE FROM staging where doc_id = ?'
     try:
-        insert_query(del_qury, (doc_id))
+        insert_query(del_qury, (doc_id, ))
     except Error as e :
         raise ("ERROR WHILE DELETING ROW : " + str(e))
 

@@ -11,6 +11,7 @@ def stage_file(file_path, content):
         data['doc_id'] = doc_id
         data['content'] = content
         staging_create_or_update(data)
+        print("Changed Staged")
     else:
         raise 'File Not Saved Properly'
 

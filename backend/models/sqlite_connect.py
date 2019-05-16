@@ -51,6 +51,23 @@ def update_query(query, variable):
     finally:
         conn.close()
 
+def delete_task(query, variable):
+    """
+    Delete a task by task id
+    :param conn:  Connection to the SQLite database
+    :param id: id of the task
+    :return:
+    """
+    try:
+        conn = sqlite_connect()
+        cur = conn.cursor()
+        cur.execute(query, variable)
+        conn.commit()
+    except Error as e:
+        raise e
+    finally:
+        conn.close()
+
 if __name__ == '__main__':
     select= 'Select * from document;'
     select_query(select, 'document')
