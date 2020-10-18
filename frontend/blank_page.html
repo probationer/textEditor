@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title id="title">
+            Writer Box
+        </title>
+        <link rel="stylesheet" href="css/saved_file_text.css">
+        <!-- <link rel="stylesheet" href="css/footer.css"> -->
+        <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+        <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
+        <script src="../editor/tinymce/js/tinymce/tiny_mce.js"></script>
+        <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../render_process/save.js"></script>
+
+        <script>
+            tinymce.init({
+                selector: 'textarea#textarea_file',
+                theme: 'modern',
+                // inline: true,
+                // hidden_input: false,
+                autosave_interval: "20s",
+                // plugins: 'preview searchreplace autosave directionality visualblocks visualchars fullscreen link table charmap hr anchor toc insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
+                toolbar1: 'formatselect | font |bold italic strikethrough superscript subscript codesample | link | alignleft aligncenter alignright alignjustify  | numlist bullist | removeformat',
+            });
+        </script>
+        <style> 
+        </style>
+    </head>
+
+    <body >
+        <div id="middle_section" >
+            <input id="file_name" placeholder="Page Name">
+            <span id="saved_file_notification" class="saved_file_notification">save file</span>
+            <textarea id="textarea_file" autofocus rows="40"> 
+            </textarea>
+        </div>
+        <script>    
+            const {ipcRenderer} = require('electron');
+            const {globalShortcut,app,dialog} = require('electron').remote;
+            const fs = require("fs")
+            
+            //check file name must not be empty
+            function required_input(div_id){
+                console.log(div_id)
+                InputValue = document.getElementById(div_id).value
+                if (InputValue.trim() == ""){
+                    var responseValue;
+                    option = {
+                        type: "info",
+                        buttons: ["Okay",],
+                        title: "Title of file",
+                        message: "I think this beautifull creation must deserve a name",
+                    }
+                    responseValue = dialog.showMessageBox(null, option, function(response) {
+                                        return response
+                                    }())
+                    console.log(responseValue)
+                    return responseValue;
+                    // document.getElementById(div_id).value = NewInputValue
+                } 
+            }
+
+            //save the file in system
+            globalShortcut.register('CommandOrControl+S', () => {
+                // console.log()
+                if (required_input("file_name") != 0){
+                    tinymce.triggerSave();
+                    let item = document.getElementById('textarea_file').value;
+                    let filename = document.getElementById('file_name').value;
+                    ipcRenderer.send('item_add', [item, filename.split(".")[0]]);
+                }else{
+                    document.getElementById("file_name").focus();
+                }
+            })
+            ipcRenderer.on('reply', (event, arg) => {
+                console.log("asd", arg)
+                document.getElementById('saved_file_notification').innerHTML = arg;
+                document.getElementById('saved_file_notification').classList.add('onSave');
+                setTimeout(() => {
+                    document.getElementById('saved_file_notification').classList.remove('onSave');
+                }, 500);
+                
+                console.log(document.getElementById('saved_file_notification').classList);
+                var filename = arg.split('/').pop()
+                console.log(filename)
+                document.getElementById('file_name').value = filename;
+            })
+
+            //read file from system
+            globalShortcut.register('CommandOrControl+O', (event) =>{
+                dialog.showOpenDialog((filename) => {
+                    // fileNames is an array that contains all the selected
+                    if(filename === undefined){
+                        console.log("No file selected")
+                    }
+                    filepath = filename[0]
+                    var filedata
+                    fs.readFile(filepath, 'utf-8', (err, data) => {
+                        if(err){
+                            console.log("An error ocurred reading the file : " + err.message)
+                        }
+                        console.log(data+":\n" +filepath.split('/').pop())
+                        document.getElementById('file_name').value = filepath.split('/').pop()
+                        tinymce.activeEditor.setContent(data);
+                    })
+                })
+            })
+            
+        </script>
+    </body>
+</html>

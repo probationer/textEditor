@@ -1,25 +1,517 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-
+        <title id="title">
+            Writer Box
         </title>
+        <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/left_panel.css">
+        <link rel="stylesheet" href="css/right-panel.css">
+        <link rel="stylesheet" href="css/middle-panel.css">
+        <link rel="stylesheet" href="css/saved_file_text.css">
+        <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="../editor/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
         <script src="../editor/tinymce/js/tinymce/tinymce.min.js"></script>
+        <script src="../editor/tinymce/js/tinymce/tiny_mce.js"></script>
+        <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+        <link rel="stylesheet" href="css/modal.css">
         <script>
             tinymce.init({
-                selector: 'textarea',
+                selector: 'textarea#textarea_file',
                 theme: 'modern',
+                // inline: true,
+                // hidden_input: false,
                 autosave_interval: "20s",
                 plugins: 'preview searchreplace autosave directionality visualblocks visualchars fullscreen link table charmap hr anchor toc insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
                 toolbar1: 'formatselect | font |bold italic strikethrough superscript subscript codesample | link | alignleft aligncenter alignright alignjustify  | numlist bullist | removeformat',
             });
         </script>
     </head>
-    <body>
-        
-        <textarea 'id'='textareaarticle' rows=35>
 
-        </textarea>
+    <body style="background-color:#d2fff1">
+        <div class="left-panel" id="leftPanel">
+            <div class="product-desc">
+                <img src="images/product-logo.png">
+                <div class="product-name">Writer Box</div>
+            </div>
+            <div class="folder-options" id='open_files'>
+                <div class="option-item main-option">
+                    <i class="fa fa-folder large-icon" aria-hidden="true"></i>
+                    <div class="option-name">Open File</div>
+                </div>
+                <!-- <div class="option-item">
+                    <i class="fa fa-file-text-o small-icon" aria-hidden="true"></i>
+                    <a href="" class="option-name">File 3</a>
+                </div> -->
+            </div>
+
+        </div>
+        <div id="middle_section" >
+            <div class="header-container">
+                <input type="hidden" id='current_file_path'>
+                <input id="file_name" placeholder="Document Title">
+                <div id="saved_file_notification" class="saved_file_notification" style=" margin: 50px 0px 0px 40px;">All Changes are saved</div>
+                <div class="button-container">
+                    <select class="header-dropdown" onchange="getSelectedElement(this);">
+                        <option>See Changes</option>
+                        <option>Current Changes</option>
+                        <option>Review Changes</option>
+                    </select>
+
+                    <button type="button" class="save-button" id="review_changes_btn" onclick="staging_changes()">
+                        <span>Review Stage</span>
+                    </button>
+                
+                    <button type="button" class="save-button" id="merge_changes_btn" onclick="merge_changes()">
+                        <span>Merge Changes</span>
+                    </button>
+                    
+                    <button type="button" class="save-button" onclick="alert('Hello world!')">
+                        <i class="fa fa-lock small-icon" aria-hidden="true"></i>
+                        <span>Protector</span>
+                    </button>
+                </div>
+            </div>
+            <div class="text-editor-container" >
+                <textarea id="textarea_file" autofocus rows="20"> 
+                </textarea>
+                <div class="history-writer">
+                    <div class="change-header">
+                        <i class="fa fa-clock-o clock-icon" aria-hidden="true" onclick="get_merge_history()"></i>
+                        <span class="margin-left"> Version History</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="current_changes" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p style="display: flex; margin-bottom: 0; justify-content: center;">Current Changes </p>
+                    <span class="close" style="color: black; ">Close</span>
+                </div>
+                <div class="modal-body" id="current_changes_box">
+                </div>
+            </div>
+        </div>
+        
+        <div id="review_changes"  class="modal">
+            <div class="modal2-content">
+                <div class="modal-header">
+                    <p style="display: flex; margin-bottom: 0; justify-content: center;">Review Changes </p>
+                    <span class="close" style="color: black; ">Close</span>
+                </div>
+                <div class="modal-body" id="review_changes_box">
+                    <div style="border-right: 1px solid black; width:500px">
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                        <p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p><p> this line of test</p>
+                    </div>
+                    <div style="width:500px">
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                        <p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p><p>this line not for test</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="footer-drop-down">
+                <div>Username</div>
+            </div>
+            <div class="footer-blocks">
+                <div class="footer-block-see-changes">See Changes</div>
+                <div class="footer-block-see-changes" onclick="commit_chamges('hello')">Commit</div>
+                <div class="footer-block-type">Type</div>
+            </div>
+        </footer>
+    
+        <script>
+            function getSelectedElement(selectedElement){
+                var selectedIndex = selectedElement.selectedIndex;
+                var selectedElement = selectedElement.options[selectedIndex].value;
+                
+                if(selectedElement === "Current Changes") {
+                    getDiff('current_changes_box')
+                    modal1.style.display = "flex";
+                } else if(selectedElement === "Review Changes") {
+                    getDiff('review_changes_box')
+                    modal2.style.display = "flex";
+                }
+            }
+
+            var modal1 = document.getElementById('current_changes');
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+                modal1.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal1) {
+                modal1.style.display = "none";
+                }
+            }
+
+            var modal2 = document.getElementById('review_changes');
+            var span = document.getElementsByClassName("close")[1];
+            span.onclick = function() {
+                modal2.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal2) {
+                modal2.style.display = "none";
+                }
+            }
+        </script>
     </body>
+    <script>    
+        const {ipcRenderer} = require('electron');
+        const {globalShortcut,app,dialog} = require('electron').remote;
+        const fs = require("fs")
+        const ps = require("python-shell")
+
+        //check file name must not be empty
+        function required_input(div_id){
+            InputValue = document.getElementById(div_id).value
+            if (InputValue.trim() == ""){
+                var responseValue;
+                option = {
+                    type: "info",
+                    buttons: ["Okay",],
+                    title: "Title of file",
+                    message: "I think this beautifull creation deserves a name",
+                }
+                responseValue = dialog.showMessageBox(null, option, function(response) {
+                                    return response
+                                }())
+                return responseValue;
+                // document.getElementById(div_id).value = NewInputValue
+            } 
+        }
+
+        //save the file in system
+        function saveFile(){
+            if (required_input("file_name") != 0){
+                tinymce.activeEditor.save();
+                // tinymce.triggerSave();
+                let item = document.getElementById('textarea_file').value;
+                let filename = document.getElementById('file_name').value;
+                // TODO: add project dir from frontend 
+                //let project_dir = '/Users/vs/Documents/workspace@roy/text-editor/textEditor/text_files/'//documet.getElementById('current_project').value;
+                ipcRenderer.send('item_add', [item, filename.split(".")[0]]);
+                return true
+            }else{
+                document.getElementById("file_name").focus();
+            }
+            return false
+        }
+
+        //get reply from main.js
+        function reply_from_main(){
+            ipcRenderer.on('reply', function(event, arg) {
+                // document.getElementById('saved_file_notification').innerHTML = arg;
+                document.getElementById('saved_file_notification').classList.add('onSave');
+                setTimeout(() => {
+                    document.getElementById('saved_file_notification').classList.remove('onSave');
+                }, 1500);
+                var filename = arg
+                console.log("arg : "+ arg)
+                filename = filename.split('/').pop()
+                console.log(filename)
+                document.getElementById('file_name').value = filename;
+                savePath(arg)
+                add_file_in_context(arg, "open_files")
+            })
+        }
+
+        //add file name in context
+        function add_file_in_context(file_name, context_menu_id){
+            console.log(file_name, context_menu_id)
+            let open_filles = document.getElementById(context_menu_id).innerHTML
+            no_file_of_same_name = true
+            
+                document.getElementById("current_file_path").value = file_name
+                document.getElementById(context_menu_id).innerHTML = open_filles + '<div class="option-item" id="open_file_name"><i class="fa fa-file-text-o small-icon" aria-hidden="true"></i><a href="" class="option-name">'+file_name.split('/').pop()+'</a></div>';
+                // document.getElementsByTagName("a")[i].style.background = "#464242"
+            
+        }
+
+        //show changes 
+        function showChanges(div_id){
+            if(document.getElementById(div_id).classList[1] == 'btn-info'){
+                document.getElementById(div_id).innerHTML = 'Hide Changes'
+                document.getElementById(div_id).classList.remove('btn-info')
+                document.getElementById(div_id).classList.add('btn-default')
+                document.getElementById(div_id).value =1
+                getDiff()
+            }else{
+                document.getElementById(div_id).innerHTML = 'Show Changes'
+                document.getElementById(div_id).classList.remove('btn-default')
+                document.getElementById(div_id).classList.add('btn-info')
+                document.getElementById(div_id).value =0
+            }
+            //python get changes
+           
+            // py.on('message', function (message) {
+            //     // received a message sent from the Python script (a simple "print" statement)
+            //     // console.log((message))
+            //     let doc = new DOMParser().parseFromString(message, 'text/html');
+            //     // console.log("DOC", doc.body.childNodes);
+            //     // document.getElementById('output_value').appendChild(doc.body.firstChild)
+            //     // tinymce.activeEditor.setContent()
+            // });
+        }        
+
+        function update_right_panel(class_id, file_name, date, user_name){
+            inner_data = document.getElementsByClassName(class_id)[0].innerHTML
+            draft_msg = '<div class="change-items">'
+            draft_msg += '<div class="change-item-heading">File : '+file_name+'</div>'
+            draft_msg += '<div class="change-item-sub">'+date+'</div>'
+            draft_msg += '<div class="change-item-editor">'
+            draft_msg += '<div class="saved-by">'
+            draft_msg += 'Saved by: <span id="editor-name">'+user_name+'</span>'
+            draft_msg += '</div>'
+            draft_msg += '</div>'
+            draft_msg += '</div>'
+            document.getElementsByClassName(class_id)[0].innerHTML += draft_msg
+                    
+        }
+
+
+        //merge Changes 
+        function merge_changes(){
+            // if (!tinymce.activeEditor.isDirty()){
+                let file_path = document.getElementById('current_file_path').value;
+                console.log("file path ==>> " + file_path)
+                options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path,] 
+                    }
+                var py = ps.PythonShell.run("store_version.py", options, function(err, results){
+
+                    if (err) {
+                        console.log(err)
+                    }else{
+                        console.log("merged file : " + file_path)
+                    }   
+                    index = results.indexOf('File Merged')
+                    console.log(results, index)
+                    console.log(results[index])
+                    console.log(results[index-1])
+                    console.log(results[index-2])
+                    console.log(results[index-3])
+                    if ((index != -1) && (results[index] == 'File Merged')){
+                        class_id = 'history-writer'
+                        filename = file_path.split('/').pop()
+                        date = results[index-1] 
+                        user_name = results[index-2]
+                        update_right_panel(class_id, filename ,date, user_name)
+                        alert(results[index])
+                    }else{
+                        alert('Not able to Merge right now')
+                    }
+                    
+                });
+            // }else{
+            //     alert("You must save your contents.");
+            // }
+        }
+        
+        function get_merge_history(){
+            let file_path = document.getElementById('current_file_path').value;
+            console.log("file path ==>> " + file_path)
+            options = { 
+                    mode: 'text',
+                    //pythonPath: 'path/to/python',
+                    pythonOptions: ['-u'], // get print results in real-time
+                    scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                    args: [file_path,] 
+                }
+            var py = ps.PythonShell.run("merge_history.py", options, function(err, results){
+
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log("merged file : " + file_path)
+                }   
+                console.log(results)
+                len = results.length 
+                if ((results.length > 0)){
+                    class_id = 'history-writer'
+                    for (i = 0 ; i<len; i += 3){
+                        filename = results[i+1]
+                        date = results[i+2] 
+                        user_name = results[i]
+                        update_right_panel(class_id, filename ,date, user_name)
+                    }
+                }else{
+                    alert('Not able to Merge right now')
+                }
+                
+            });
+        }
+
+        //commit changes 
+        function commit_chamges(){
+            if (!tinymce.activeEditor.isDirty()){
+                let file_path = document.getElementById('current_file_path').value;
+                tinymce.activeEditor.save();
+                var item = document.getElementById('textarea_file').value;
+                console.log("file path ==>> " + file_path)
+                options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path, item] 
+                    }
+                var py = ps.PythonShell.run("commit_changes.py", options, function(err, results){
+
+                    if (err) {
+                        console.log(err)
+                    }else{
+                        console.log(item)
+                    }   
+                    alert(results)
+                });
+            }else{
+                alert("You must save your contents.");
+            }
+        }
+
+        //get difference
+        function getDiff(output_div){
+            file_path = document.getElementById('current_file_path').value;
+            options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path] 
+                }
+            var py = ps.PythonShell.run("difference_checker.py", options, function(err, results){
+
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(results)
+                    var data = new String();
+                    const doc = new DOMParser()
+                    results.forEach(element => {
+                        const node = doc.parseFromString(element, 'text/html');
+                        if (node.body.firstChild != null && (node.body.firstChild.nodeType > 0 && node.body.firstChild.nodeType <=12 )){
+                            // document.getElementById('output_value').appendChild(node.body.firstChild)
+                            data += element
+                        }
+                    })
+                    // console.log(data)
+                    //set data in editor
+                    document.getElementById(output_div).innerHTML = data
+                    // tinymce.activeEditor.insertContent(data)
+                }   
+            }) 
+        }
+        
+        //stage change
+        function staging_changes(){
+            let file_path = document.getElementById('current_file_path').value;
+            tinymce.activeEditor.save();
+            var item = document.getElementById('textarea_file').value;
+            console.log("file path: " + file_path)
+            options = { 
+                        mode: 'text',
+                        //pythonPath: 'path/to/python',
+                        pythonOptions: ['-u'], // get print results in real-time
+                        scriptPath: '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                        args: [file_path, item] 
+                }
+            var py = ps.PythonShell.run("staging_files.py", options, function(err, results){
+
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(item)
+                }   
+                alert(results)
+            });
+        }
+        
+        
+        //save path
+        function savePath(file_path){
+            options = {
+                scriptPath : '/Users/vs/Documents/workspace@roy/text-editor/textEditor/backend',
+                args : [file_path]
+            }
+            var py = ps.PythonShell.run("path_manager.py", options, function(err, results){
+                if (err) {
+                    console.log(err)
+                }else{
+                    console.log(results)
+                }
+            })
+
+        }
+
+        //show changes
+        function check_showChange_status(){
+            const activity = document.getElementById('show_changes').value
+            if (activity == '1'){
+                // getDiff()
+                if (tinymce.activeEditor.isDirty())
+                ///setDirty(state:Boolean)
+                    alert("You must save your contents.");
+            }
+        }
+        
+        //save file
+        globalShortcut.register('CommandOrControl+S', () => {
+            saveFile()
+            reply_from_main()
+        })
+        
+        //read file from system
+        globalShortcut.register('CommandOrControl+O', (event) =>{
+            dialog.showOpenDialog((filename) => {
+                // fileNames is an array that contains all the selected
+                if(filename === undefined){
+                    console.log("No file selected")
+                }
+                filepath = filename[0]
+                document.getElementById('current_file_path').value = filepath
+                fs.readFile(filepath, 'utf-8', (err, data) => {
+                    if(err){
+                        console.log("An error ocurred reading the file : " + err.message)
+                    }
+                    file_name = filepath.split('/').pop()
+                    document.getElementById('file_name').value = file_name
+                    tinymce.activeEditor.setContent(data)
+                    add_file_in_context(filename[0], "open_files")
+                    get_merge_history()
+                })
+            })
+        })
+    
+        //create new file
+        globalShortcut.register('CommandOrControl+N', (event) => {
+            if(saveFile()){
+                reply_from_main()
+                //remove every thing from editor 
+                //remove the file name
+                document.getElementById('file_name').value = null
+                tinymce.activeEditor.setContent();
+            }
+        })
+
+    </script>
 </html>

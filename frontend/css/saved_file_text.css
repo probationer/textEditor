@@ -1,0 +1,29 @@
+#file_name{
+    font: 30px sans-serif;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid gray;
+    max-width: 230px;
+    padding: 0;
+    line-height: 2px;
+    outline: none;
+    margin: 0;
+    overflow: auto;
+}
+
+.saved_file_notification{
+    /* animation-name: vanish;
+    animation-duration: 5s;
+    color:white */
+    opacity: 0; 
+    transition: opacity .25s ease-in-out;
+}
+
+.onSave {
+    opacity: 1;
+}
+@keyframes vanish {
+    from {color: black;}
+    to {color: white;}
+}

@@ -1,0 +1,5 @@
+node_modules
+penv
+.DS_Store
+__pycache__
+database

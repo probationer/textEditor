@@ -1,0 +1,34 @@
+{
+  "name": "document-editor",
+  "version": "1.0.0",
+  "description": "simple editor for book novelist and scholars",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w sqlite3",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/probationer/textEditor.git"
+  },
+  "author": "sandeep_roy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/probationer/textEditor/issues"
+  },
+  "homepage": "https://github.com/probationer/textEditor#readme",
+  "dependencies": {
+    "bower": "^1.8.8",
+    "brfs": "^2.0.2",
+    "dialogs": "^1.1.20",
+    "electron": "^7.2.4",
+    "electron-tabs": "^0.9.5",
+    "knex": "^0.16.5",
+    "python-shell": "^1.0.7",
+    "sqlite3": "^4.0.8"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.4"
+  }
+}
