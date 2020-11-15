@@ -2,7 +2,7 @@
 It is a WYSIWYG editor based written in node js. and compatible with all browser.
 
 ## Main Goal
-* Main goal is that writters (articles, story, poem etc writters) also get feature like git. i.e no need to maintain their own written version with copy-pasting and or by creating folder. Just single click and jump to their older versions. 
+* Main goal is that writers (articles, story, poem etc writers) also get feature like git. i.e no need to maintain their own written version with copy-pasting and or by creating folder. Just single click and jump to their older versions. 
 
 
 
